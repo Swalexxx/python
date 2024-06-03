@@ -1,15 +1,16 @@
-from pynput import keyboard
+import keyboard
 
-def keyPressed(key):
-    print(str(key))
-    with open("keysPressed.txt", 'a') as logKey:
+def klavye_takip():
+    print("Klavye takip başladı. İzlemeyi sonlandırmak için 'q' tuşuna basın.")
+    while True:
         try:
-            char = key.char
-            logKey.write(char)
-        except:
-            print("Error acquiring data")
+            tus = keyboard.read_event()
+            if tus.event_type == keyboard.KEY_DOWN:
+                print(f"Tuş: {tus.name}")
+                if tus.name == "q":
+                    print("İzleme sonlandırıldı.")
+                    break
+        except KeyboardInterrupt:
+            break
 
-if __name__== "__main__":
-    listener =  keyboard.Listener(on_press=keyPressed)
-    listener.start()
-    input()
+klavye_takip()
